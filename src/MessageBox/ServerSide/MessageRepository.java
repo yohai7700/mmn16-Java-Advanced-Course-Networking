@@ -28,4 +28,9 @@ public class MessageRepository {
             messages.put(userName, userMessages);
         }
     }
+
+    public void insertMessages(List<Message> messages){
+        for(Message message : messages)
+            insertMessage(message);
+    }
 }

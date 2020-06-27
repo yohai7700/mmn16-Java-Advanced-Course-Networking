@@ -1,9 +1,7 @@
 package MessageBox.ServerSide;
 
+import MessageBox.Data;
 import MessageBox.Message;
-import javafx.scene.chart.PieChart;
-
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,11 +29,27 @@ public class Server {
     private void handleConnection() throws Exception {
         InputStream inputStream = clientSocket.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        OutputStream outputStream = clientSocket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-        messages.insertMessage((Message) objectInputStream.readObject());
+        handleData((Data)objectInputStream.readObject(), objectOutputStream);
 
+        objectOutputStream.close();
+        outputStream.close();
         objectInputStream.close();
         inputStream.close();
+    }
+
+    private void handleData(Data data, ObjectOutputStream outputStream){
+        switch(data.getRequest()){
+            case UPLOAD:
+                messages.insertMessages(data.getMessages());
+            case DOWNLOAD:
+                sendUserMessages(data.getUserName(), outputStream);
+        }
+    }
+
+    private void sendUserMessages(String userName, ObjectOutputStream outputStream){
     }
 
     public static void main(String[] args) {
