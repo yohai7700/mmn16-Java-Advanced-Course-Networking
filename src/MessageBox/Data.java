@@ -1,16 +1,16 @@
 package MessageBox;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Data {
+public class Data implements Serializable {
     public enum Request{DOWNLOAD, UPLOAD}
 
     private final Request request;
-    private final List<Message> messages;
+    private final Message message;
     private final String userName;
 
-    public Data(List<Message> messages) {
-        this.messages = messages;
+    public Data(Message message) {
+        this.message = message;
         request = Request.UPLOAD;
         userName = null;
     }
@@ -18,11 +18,11 @@ public class Data {
     public Data(String userName){
         this.userName = userName;
         request = Request.DOWNLOAD;
-        messages = null;
+        message = null;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public Message getMessage() {
+        return message;
     }
 
     public Request getRequest() {

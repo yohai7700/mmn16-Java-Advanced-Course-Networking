@@ -1,12 +1,13 @@
 package MessageBox.ServerSide;
 
 import MessageBox.Data;
-import MessageBox.Message;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Set;
 
-public class Server {
+public class Server extends Thread{
     public static final int PORT = 9876;
 
     MessageRepository messages;
@@ -15,14 +16,17 @@ public class Server {
 
     public Server(){
         messages = new MessageRepository();
+    }
+
+    @Override
+    public void run() {
         try { //required catch block
             socket = new ServerSocket(PORT);
-            while(true){
+            while(true)
                 try {
                     clientSocket = socket.accept();
                     handleConnection();
                 } catch(Exception ignored){ socket.close(); }
-            }
         } catch (IOException exception){ exception.printStackTrace(); }
     }
 
@@ -52,7 +56,15 @@ public class Server {
     private void sendUserMessages(String userName, ObjectOutputStream outputStream){
     }
 
-    public static void main(String[] args) {
-        Server server = new Server();
+    public void removeUser(String user){
+        messages.removeUser(user);
+    }
+
+    public void addUser(String user){
+        messages.addUser(user);
+    }
+
+    public Set<String> getUsers() {
+        return messages.getUsers();
     }
 }

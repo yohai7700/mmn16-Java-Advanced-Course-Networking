@@ -2,10 +2,10 @@ package MessageBox.ServerSide;
 
 import MessageBox.Message;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class MessageRepository {
     private final HashMap<String, ArrayList<Message>> messages;
@@ -32,5 +32,17 @@ public class MessageRepository {
     public void insertMessages(List<Message> messages){
         for(Message message : messages)
             insertMessage(message);
+    }
+
+    public Set<String> getUsers(){
+        return messages.keySet();
+    }
+
+    public void removeUser(String user){
+        messages.remove(user);
+    }
+
+    public void addUser(String user){
+        messages.put(user, new ArrayList<>());
     }
 }
