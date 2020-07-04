@@ -1,10 +1,12 @@
 package MessageBox.ServerSide;
 
-import MessageBox.Data;
+import MessageBox.Request;
+import MessageBox.Message;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 import java.util.Set;
 
 public class Server extends Thread{
@@ -26,7 +28,7 @@ public class Server extends Thread{
                 try {
                     clientSocket = socket.accept();
                     handleConnection();
-                } catch(Exception ignored){ socket.close(); }
+                } catch(Exception e){ socket.close(); }
         } catch (IOException exception){ exception.printStackTrace(); }
     }
 
@@ -36,7 +38,7 @@ public class Server extends Thread{
         OutputStream outputStream = clientSocket.getOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-        handleData((Data)objectInputStream.readObject(), objectOutputStream);
+        handleConnection(objectInputStream, objectOutputStream);
 
         objectOutputStream.close();
         outputStream.close();
@@ -44,16 +46,41 @@ public class Server extends Thread{
         inputStream.close();
     }
 
-    private void handleData(Data data, ObjectOutputStream outputStream){
-        switch(data.getRequest()){
+    private void handleConnection(ObjectInputStream inputStream, ObjectOutputStream outputStream){
+        Request request;
+        try{ request = (Request)inputStream.readObject();}
+        catch(ClassNotFoundException | IOException exception){return;}
+        handleRequest(request, outputStream);
+    }
+
+    private void handleRequest(Request request, ObjectOutputStream outputStream){
+        switch (request.getType()){
             case UPLOAD:
-                messages.insertMessages(data.getMessages());
+                uploadMessage(request.getMessage());
+                break;
             case DOWNLOAD:
-                sendUserMessages(data.getUserName(), outputStream);
+                sendUserMessages(request.getUserName(), outputStream);
+                break;
         }
     }
 
+    private void uploadMessage(Message message){
+        messages.insertMessage(message);
+    }
+
     private void sendUserMessages(String userName, ObjectOutputStream outputStream){
+        List<Message> userMessages = messages.getMessages(userName);
+        for(Message message : userMessages)
+            try{ outputStream.writeObject(message);}
+            catch(IOException ignored){}
+
+        do { //tries to send an empty message to signal all messages sent, until successful
+            try{
+                outputStream.writeObject(Message.createEmptyMessage());
+                return;
+            }
+            catch(IOException ignored){}
+        }while(true);
     }
 
     public void removeUser(String user){
@@ -63,6 +90,8 @@ public class Server extends Thread{
     public void addUser(String user){
         messages.addUser(user);
     }
+
+    public boolean containsUser(String user){ return messages.containsUser(user); }
 
     public Set<String> getUsers() {
         return messages.getUsers();

@@ -45,4 +45,6 @@ public class MessageRepository {
     public void addUser(String user){
         messages.put(user, new ArrayList<>());
     }
+
+    public boolean containsUser(String user) { return messages.containsKey(user); }
 }

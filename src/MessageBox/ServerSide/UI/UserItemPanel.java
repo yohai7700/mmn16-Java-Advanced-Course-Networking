@@ -1,5 +1,7 @@
 package MessageBox.ServerSide.UI;
 
+import MessageBox.OnDeleteListener;
+
 import javax.swing.*;
 
 public class UserItemPanel extends JPanel{
@@ -16,6 +18,7 @@ public class UserItemPanel extends JPanel{
         removeButton.addActionListener(actionEvent -> onDeleteListener.onDelete(userNameLabel.getText()));
         add(userNameLabel);
         add(removeButton);
+        setMaximumSize(getPreferredSize());
     }
 
     public String getUserName() {
@@ -31,7 +34,9 @@ public class UserItemPanel extends JPanel{
     }
 
     public void setOnDeleteListener(OnDeleteListener onDeleteListener) {
-        this.onDeleteListener = onDeleteListener;
-    }
 
+        this.onDeleteListener = onDeleteListener;
+        String user = userNameLabel.getText();
+        removeButton.addActionListener(actionEvent -> onDeleteListener.onDelete(user));
+    }
 }

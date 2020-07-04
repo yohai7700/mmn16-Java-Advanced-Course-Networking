@@ -2,22 +2,22 @@ package MessageBox;
 
 import java.io.Serializable;
 
-public class Data implements Serializable {
-    public enum Request{DOWNLOAD, UPLOAD}
+public class Request implements Serializable {
+    public enum Type{DOWNLOAD, UPLOAD}
 
-    private final Request request;
+    private final Type name;
     private final Message message;
     private final String userName;
 
-    public Data(Message message) {
+    public Request(Message message) {
         this.message = message;
-        request = Request.UPLOAD;
+        name = Type.UPLOAD;
         userName = null;
     }
 
-    public Data(String userName){
+    public Request(String userName){
         this.userName = userName;
-        request = Request.DOWNLOAD;
+        name = Type.DOWNLOAD;
         message = null;
     }
 
@@ -25,8 +25,8 @@ public class Data implements Serializable {
         return message;
     }
 
-    public Request getRequest() {
-        return request;
+    public Type getType() {
+        return name;
     }
 
     public String getUserName(){

@@ -1,6 +1,6 @@
 package MessageBox.ClientSide;
 
-import MessageBox.Data;
+import MessageBox.Request;
 import MessageBox.Message;
 import MessageBox.ServerSide.Server;
 
@@ -16,26 +16,23 @@ public class Client{
     private int serverPort;
     private Socket socket;
 
-    public Client(){
-        ip = LOOPBACK_IP;
-        serverPort = Server.PORT;
-        try {
-            socket = new Socket(ip, serverPort);
-        }catch (IOException ignored){}
+    public Client() throws IOException{
+        this(LOOPBACK_IP, Server.PORT);
     }
 
-    public Client(String ip, int port){
+    public Client(String ip, int port) throws IOException{
         this.ip = ip;
         serverPort = port;
+        updateSocket();
     }
 
-    public void uploadMessage(Message message) throws IOException{
+    public void sendMessage(Message message) throws IOException{
         OutputStream outputStream = socket.getOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-        Data data = new Data(message);
+        Request request = new Request(message);
 
-        objectOutputStream.writeObject(data);
+        objectOutputStream.writeObject(request);
         objectOutputStream.close();
         outputStream.close();
     }
@@ -49,9 +46,9 @@ public class Client{
         OutputStream outputStream = socket.getOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
 
-        Data data = new Data(user);
+        Request request = new Request(user);
 
-        objectOutputStream.writeObject(data);
+        objectOutputStream.writeObject(request);
         objectOutputStream.close();
         outputStream.close();
     }
@@ -61,13 +58,17 @@ public class Client{
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
         ArrayList<Message> messages = new ArrayList<>();
 
-        Data data = (Data)objectInputStream.readObject();
-        for(; data.getMessage() != null; data = (Data)objectInputStream.readObject())
-            messages.add(data.getMessage());
+        Request request = (Request)objectInputStream.readObject();
+        for(; request.getMessage() != null; request = (Request)objectInputStream.readObject())
+            messages.add(request.getMessage());
 
         objectInputStream.close();
         inputStream.close();
         return messages;
+    }
+
+    private void updateSocket() throws IOException{
+        socket = new Socket(ip, serverPort);
     }
 
     public int getServerPort() {

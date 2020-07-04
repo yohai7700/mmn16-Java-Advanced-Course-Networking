@@ -1,21 +1,22 @@
 package MessageBox.ServerSide.UI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class AddUserPanel extends JPanel {
-    private static final int textFieldWidth = 10;
+    private static final int TEXT_FIELD_WIDTH = 10;
 
     private final JTextField userNameTextField;
     private final JButton addUserButton;
     private final OnAddListener onAddListener;
 
     public AddUserPanel(OnAddListener onAddListener){
+        setBackground(Color.LIGHT_GRAY);
         userNameTextField = new JTextField();
-        userNameTextField.setColumns(10
-        );
         addUserButton = new JButton("Add");
-        setAddUserButton();
         this.onAddListener = onAddListener;
+        setUserTextField();
+        setAddUserButton();
         addComponents();
     }
 
@@ -25,7 +26,14 @@ public class AddUserPanel extends JPanel {
     }
 
     private void setAddUserButton(){
-        addUserButton.addActionListener(actionEvent -> onAddListener.onAdd(userNameTextField.getText().strip()));
+        addUserButton.addActionListener(actionEvent ->
+                onAddListener.onAdd(userNameTextField.getText().strip()));
+    }
+
+    private void setUserTextField(){
+        userNameTextField.setColumns(TEXT_FIELD_WIDTH);
+        userNameTextField.addActionListener(actionEvent ->
+                onAddListener.onAdd(userNameTextField.getText()));
     }
 
     public interface OnAddListener{
