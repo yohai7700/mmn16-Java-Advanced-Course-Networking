@@ -39,8 +39,8 @@ public class MessagePanel extends JPanel {
 
     public void setMessage(Message message) {
         this.message = message;
-        fromLabel.setText("From: " + message.getSenderName() +
-                ", " + DateFormat.getDateInstance().format(message.getSendingDate()));
+        fromLabel.setText("From: " + message.getSenderName() + ", "
+                + DateFormat.getDateInstance().format(message.getSendingDate()));
         topicLabel.setText("Topic: " + message.getTopic());
         bodyArea.setText(message.getBody());
     }
