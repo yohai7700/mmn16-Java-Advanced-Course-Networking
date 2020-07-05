@@ -38,10 +38,10 @@ public class DraftBodyPanel extends JPanel {
 
     public Message getMessage(){
         return new Message(
-                fromPanel.getText(),
                 toPanel.getText(),
+                fromPanel.getText(),
                 topicPanel.getText(),
-                null,
+                bodyArea.getText(),
                 Calendar.getInstance().getTime()
         );
     }

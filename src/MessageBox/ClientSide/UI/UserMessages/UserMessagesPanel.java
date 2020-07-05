@@ -43,6 +43,8 @@ public class UserMessagesPanel extends ClientPanel {
         userFieldPanel.add(userField);
         userFieldPanel.add(showMessagesButton);
         add(userFieldPanel, BorderLayout.SOUTH);
+        JScrollPane scrollPane = new JScrollPane(messagesPanel);
+        add(scrollPane);
     }
 
     public OnReplyListener getOnReplyListener() {
@@ -60,8 +62,9 @@ public class UserMessagesPanel extends ClientPanel {
                     List<Message> messages = getClient().downloadMessages(userField.getText());
                     if(messages == null || messages.size() == 0 || messages.get(0).isEmpty())
                         throw new IOException();
-                    messagesPanel.setMessages(getClient().downloadMessages(userField.getText()));
-                } catch (IOException | ClassNotFoundException e) {
+                    messagesPanel.setMessages(messages);
+                } catch (IOException e) {
+                    e.printStackTrace();
                     JOptionPane.showMessageDialog(getParent(), "Couldn't show messages for this user.");
                 }
             }

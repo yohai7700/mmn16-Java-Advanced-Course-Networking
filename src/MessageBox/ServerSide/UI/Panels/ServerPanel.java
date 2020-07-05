@@ -1,4 +1,4 @@
-package MessageBox.ServerSide.UI;
+package MessageBox.ServerSide.UI.Panels;
 
 import MessageBox.Title.TitlePanel;
 import MessageBox.ServerSide.Server;

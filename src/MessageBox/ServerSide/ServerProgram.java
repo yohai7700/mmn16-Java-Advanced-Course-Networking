@@ -1,7 +1,6 @@
 package MessageBox.ServerSide;
 
-import MessageBox.ServerSide.UI.ServerPanel;
-
+import MessageBox.ServerSide.UI.Panels.ServerPanel;
 import javax.swing.*;
 
 public class ServerProgram {

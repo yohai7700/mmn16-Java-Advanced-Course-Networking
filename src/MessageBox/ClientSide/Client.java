@@ -1,11 +1,11 @@
 package MessageBox.ClientSide;
 
-import MessageBox.Request;
+import MessageBox.ClientSide.UI.Thread.DownloaderThread;
+import MessageBox.ClientSide.UI.Thread.SenderThread;
 import MessageBox.Message;
 import MessageBox.ServerSide.Server;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,6 @@ public class Client{
 
     private String ip;
     private int serverPort;
-    private Socket socket;
 
     public Client() throws IOException{
         this(LOOPBACK_IP, Server.PORT);
@@ -23,52 +22,21 @@ public class Client{
     public Client(String ip, int port) throws IOException{
         this.ip = ip;
         serverPort = port;
-        updateSocket();
     }
 
     public void sendMessage(Message message) throws IOException{
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-        Request request = new Request(message);
-
-        objectOutputStream.writeObject(request);
-        objectOutputStream.close();
-        outputStream.close();
+        (new SenderThread(ip, serverPort, message)).start();
     }
 
-    public List<Message> downloadMessages(String user) throws IOException, ClassNotFoundException{
-        requestDownloadMessages(user);
-        return receiveMessages();
-    }
-
-    private void requestDownloadMessages(String user) throws IOException{
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-        Request request = new Request(user);
-
-        objectOutputStream.writeObject(request);
-        objectOutputStream.close();
-        outputStream.close();
-    }
-
-    private List<Message> receiveMessages() throws IOException, ClassNotFoundException{
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        ArrayList<Message> messages = new ArrayList<>();
-
-        Request request = (Request)objectInputStream.readObject();
-        for(; request.getMessage() != null; request = (Request)objectInputStream.readObject())
-            messages.add(request.getMessage());
-
-        objectInputStream.close();
-        inputStream.close();
+    public List<Message> downloadMessages(String user) throws IOException{
+        List<Message> messages = new ArrayList<>();
+        DownloaderThread downloaderThread = new DownloaderThread(ip, serverPort, user, messages::addAll);
+        downloaderThread.start();
+        try {
+            //waiting to thread for finish downloading - dying
+            downloaderThread.join();
+        } catch (InterruptedException ignored){return null;}
         return messages;
-    }
-
-    private void updateSocket() throws IOException{
-        socket = new Socket(ip, serverPort);
     }
 
     public int getServerPort() {

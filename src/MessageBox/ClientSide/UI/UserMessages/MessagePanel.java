@@ -6,6 +6,7 @@ import MessageBox.Message;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DateFormat;
 
 public class MessagePanel extends JPanel {
     private static final int BORDER_THICKNESS = 1;
@@ -29,6 +30,7 @@ public class MessagePanel extends JPanel {
         setButtons();
         setMessage(message);
         addComponents();
+        setMaximumSize(getPreferredSize());
     }
 
     public Message getMessage() {
@@ -37,7 +39,8 @@ public class MessagePanel extends JPanel {
 
     public void setMessage(Message message) {
         this.message = message;
-        fromLabel.setText("From: " + message.getSenderName());
+        fromLabel.setText("From: " + message.getSenderName() +
+                ", " + DateFormat.getDateInstance().format(message.getSendingDate()));
         topicLabel.setText("Topic: " + message.getTopic());
         bodyArea.setText(message.getBody());
     }
@@ -64,11 +67,11 @@ public class MessagePanel extends JPanel {
         add(fromLabel, BorderLayout.WEST);
         add(topicLabel, BorderLayout.NORTH);
         JScrollPane bodyScrollPane = new JScrollPane(bodyArea);
-        add(bodyScrollPane, BorderLayout.CENTER);
+        add(bodyScrollPane, BorderLayout.SOUTH);
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(replyButton);
         buttonsPanel.add(deleteButton);
-        add(buttonsPanel);
+        add(buttonsPanel, BorderLayout.EAST);
     }
 
     public OnReplyListener getOnReplyListener() {

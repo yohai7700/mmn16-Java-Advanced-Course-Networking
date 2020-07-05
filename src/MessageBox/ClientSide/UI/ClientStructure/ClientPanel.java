@@ -13,7 +13,8 @@ public abstract class ClientPanel extends JPanel{
     protected static final int BORDER_THICKNESS = 2;
 
     private static final String SEND_MESSAGE_ERROR =
-            "An error happened. Can't send message, please try again.";
+            "An error happened. Can't send message, please try again.",
+            SEND_MESSAGE_SUCCESS = "Message has been sent successfully.";
 
     private String title;
     private Client client;
@@ -60,8 +61,7 @@ public abstract class ClientPanel extends JPanel{
     protected void sendMessage(Message message){
         try {
             client.sendMessage(message);
-            JOptionPane.showMessageDialog(this,
-                    "Message has been sent successfully.");
+            JOptionPane.showMessageDialog(this, SEND_MESSAGE_SUCCESS);
         } catch(IOException exception){
             exception.printStackTrace();
             JOptionPane.showMessageDialog(this, SEND_MESSAGE_ERROR);

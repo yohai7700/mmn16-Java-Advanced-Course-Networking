@@ -9,19 +9,19 @@ import java.util.List;
 
 public class MessagesPanel extends JPanel{
 
-    private final List<MessagePanel> messages;
+    private final List<MessagePanel> messagePanels;
 
     private OnReplyListener onReplyListener;
 
     public MessagesPanel(OnReplyListener onReplyListener){
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.onReplyListener = onReplyListener;
-        messages = new ArrayList<>();
+        messagePanels = new ArrayList<>();
     }
 
-    public MessagesPanel(List<Message> messages, OnReplyListener onReplyListener){
+    public MessagesPanel(List<Message> messagePanels, OnReplyListener onReplyListener){
         this(onReplyListener);
-        for(Message message: messages)
+        for(Message message: messagePanels)
             add(message);
     }
 
@@ -29,28 +29,33 @@ public class MessagesPanel extends JPanel{
         MessagePanel messagePanel = new MessagePanel(message);
         messagePanel.setOnReplyListener(onReplyListener);
         messagePanel.setOnDeleteListener(this::delete);
-        messages.add(messagePanel);
+        messagePanels.add(messagePanel);
+        add(messagePanel);
         revalidate();
+        repaint();
     }
 
     private void removeMessagePanel(MessagePanel messagePanel){
-        super.remove(messagePanel);
-        messages.remove(messagePanel);
+        remove(messagePanel);
+        messagePanels.remove(messagePanel);
+        revalidate();
+        repaint();
     }
 
     public void delete(Message message){
-        for(MessagePanel messagePanel: messages)
-            if(messagePanel.getMessage().equals(message))
-                removeMessagePanel(messagePanel);
+        List<MessagePanel> toBeDeletedList = new ArrayList<>();
+        for (MessagePanel messagePanel : messagePanels)
+            if (messagePanel.getMessage().equals(message))
+                toBeDeletedList.add(messagePanel);
+        for(MessagePanel toBeDeleted: toBeDeletedList)
+            removeMessagePanel(toBeDeleted);
     }
 
     public void setMessages(List<Message> messages){
-        List<MessagePanel> currentMessagePanels = this.messages;
-        for(MessagePanel messagePanel: currentMessagePanels)
+        for(MessagePanel messagePanel: this.messagePanels)
             removeMessagePanel(messagePanel);
         for(Message message: messages)
             add(message);
-        revalidate();
     }
 
     public OnReplyListener getOnReplyListener() {

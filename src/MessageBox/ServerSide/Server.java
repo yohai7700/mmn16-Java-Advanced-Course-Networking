@@ -9,14 +9,14 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Set;
 
-public class Server extends Thread{
+public class Server extends Thread {
     public static final int PORT = 9876;
 
     MessageRepository messages;
     ServerSocket socket;
     Socket clientSocket;
 
-    public Server(){
+    public Server() {
         messages = new MessageRepository();
     }
 
@@ -24,78 +24,93 @@ public class Server extends Thread{
     public void run() {
         try { //required catch block
             socket = new ServerSocket(PORT);
-            while(true)
-                try {
+            try {
+                while (true) {
                     clientSocket = socket.accept();
+                    System.out.println("Handling Connections");
                     handleConnection();
-                } catch(Exception e){
-                    socket.close();
                 }
-        } catch (IOException exception){ exception.printStackTrace(); }
-    }
-
-    private void handleConnection() throws Exception {
-        InputStream inputStream = clientSocket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-        OutputStream outputStream = clientSocket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-        handleConnection(objectInputStream, objectOutputStream);
-
-        objectOutputStream.close();
-        outputStream.close();
-        objectInputStream.close();
-        inputStream.close();
-    }
-
-    private void handleConnection(ObjectInputStream inputStream, ObjectOutputStream outputStream){
-        Request request;
-        try{ request = (Request)inputStream.readObject();}
-        catch(ClassNotFoundException | IOException exception){return;}
-        handleRequest(request, outputStream);
-    }
-
-    private void handleRequest(Request request, ObjectOutputStream outputStream){
-        switch (request.getType()){
-            case UPLOAD:
-                uploadMessage(request.getMessage());
-                break;
-            case DOWNLOAD:
-                sendUserMessages(request.getUserName(), outputStream);
-                break;
+            } catch (Exception e) {
+                System.out.println("Exception in handling Connections");
+                e.printStackTrace();
+                socket.close();
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
-    private void uploadMessage(Message message){
-        messages.insertMessage(message);
-    }
+        private void handleConnection () throws Exception {
+            OutputStream outputStream = clientSocket.getOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+            InputStream inputStream = clientSocket.getInputStream();
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
-    private void sendUserMessages(String userName, ObjectOutputStream outputStream){
-        List<Message> userMessages = messages.getMessages(userName);
-        for(Message message : userMessages)
-            try{ outputStream.writeObject(message);}
-            catch(IOException ignored){}
+            handleConnection(objectInputStream, objectOutputStream);
 
-        do { //tries to send an empty message to signal all messages sent, until successful
-            try{
-                outputStream.writeObject(Message.createEmptyMessage());
+            objectOutputStream.close();
+            outputStream.close();
+            objectInputStream.close();
+            inputStream.close();
+        }
+
+        private void handleConnection (ObjectInputStream inputStream, ObjectOutputStream outputStream){
+            Request request = null;
+            try {
+                request = (Request) inputStream.readObject();
+            } catch (ClassNotFoundException | IOException exception) {
+                exception.printStackTrace();
                 return;
             }
-            catch(IOException ignored){}
-        }while(true);
-    }
+            System.out.println("Request" + request);
+            handleRequest(request, outputStream);
+        }
 
-    public void removeUser(String user){
-        messages.removeUser(user);
-    }
+        private void handleRequest (Request request, ObjectOutputStream outputStream){
+            System.out.println("Got request: " + request);
+            switch (request.getType()) {
+                case UPLOAD:
+                    uploadMessage(request.getMessage());
+                    break;
+                case DOWNLOAD:
+                    sendUserMessages(request.getUserName(), outputStream);
+                    break;
+            }
+        }
 
-    public void addUser(String user){
-        messages.addUser(user);
-    }
+        private void uploadMessage (Message message){
+            if(messages.containsUser(message.getReceiverName()))
+                messages.insertMessage(message);
+        }
 
-    public boolean containsUser(String user){ return messages.containsUser(user); }
+        private void sendUserMessages (String userName, ObjectOutputStream outputStream){
+            List<Message> userMessages = messages.getMessages(userName);
+            for (Message message : userMessages)
+                try {
+                    outputStream.writeObject(message);
+                } catch (IOException ignored) { }
 
-    public Set<String> getUsers() {
-        return messages.getUsers();
+            do { //tries to send an empty message to signal all messages sent, until successful
+                try {
+                    outputStream.writeObject(Message.createEmptyMessage());
+                    return;
+                } catch (IOException ignored) { }
+            } while (true);
+        }
+
+        public void removeUser (String user){
+            messages.removeUser(user);
+        }
+
+        public void addUser (String user){
+            messages.addUser(user);
+        }
+
+        public boolean containsUser (String user){
+            return messages.containsUser(user);
+        }
+
+        public Set<String> getUsers () {
+            return messages.getUsers();
+        }
     }
-}

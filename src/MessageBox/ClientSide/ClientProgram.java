@@ -1,4 +1,6 @@
-package MessageBox.ClientSide.UI.ClientStructure;
+package MessageBox.ClientSide;
+
+import MessageBox.ClientSide.UI.ClientStructure.ClientFrame;
 
 import javax.swing.*;
 
