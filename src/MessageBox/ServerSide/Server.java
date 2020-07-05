@@ -28,7 +28,9 @@ public class Server extends Thread{
                 try {
                     clientSocket = socket.accept();
                     handleConnection();
-                } catch(Exception e){ socket.close(); }
+                } catch(Exception e){
+                    socket.close();
+                }
         } catch (IOException exception){ exception.printStackTrace(); }
     }
 

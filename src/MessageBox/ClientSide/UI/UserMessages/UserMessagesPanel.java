@@ -9,6 +9,7 @@ import MessageBox.Message;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 public class UserMessagesPanel extends ClientPanel {
     private static final String TITLE = "User Messages";
@@ -56,6 +57,9 @@ public class UserMessagesPanel extends ClientPanel {
         showMessagesButton.addActionListener(actionEvent ->{
             if(!userField.getText().isEmpty()) {
                 try {
+                    List<Message> messages = getClient().downloadMessages(userField.getText());
+                    if(messages == null || messages.size() == 0 || messages.get(0).isEmpty())
+                        throw new IOException();
                     messagesPanel.setMessages(getClient().downloadMessages(userField.getText()));
                 } catch (IOException | ClassNotFoundException e) {
                     JOptionPane.showMessageDialog(getParent(), "Couldn't show messages for this user.");
