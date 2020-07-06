@@ -3,7 +3,6 @@ package MessageBox.ClientSide.UI.ClientStructure;
 import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.UI.ClientMenu;
 import MessageBox.ClientSide.UI.Configuration.ConfigurationPanel;
-import MessageBox.ServerSide.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +22,7 @@ public class ClientFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         clientMenu = new ClientMenu(client);
         configurationPanel = new ConfigurationPanel(this::setClient);
-        setClient(Client.LOOPBACK_IP, Server.PORT);
+        setClient(Client.LOOPBACK_IP, Client.DEFAULT_SERVER_PORT);
         addComponents();
     }
 

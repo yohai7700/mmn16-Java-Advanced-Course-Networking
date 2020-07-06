@@ -1,0 +1,20 @@
+Paris
+Sunny
+Cold
+Rainy
+San Francisco
+Sunny
+Rainy
+Cold
+Jerusalem
+Sunny
+Cold
+Rainy
+Berlin
+Sunny
+Cold
+Rainy
+Tokyo
+Sunny
+Cold
+Rainy

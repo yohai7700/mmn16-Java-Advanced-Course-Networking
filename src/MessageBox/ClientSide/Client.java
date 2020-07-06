@@ -3,7 +3,6 @@ package MessageBox.ClientSide;
 import MessageBox.ClientSide.UI.Thread.DownloaderThread;
 import MessageBox.ClientSide.UI.Thread.SenderThread;
 import MessageBox.Message;
-import MessageBox.ServerSide.Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,12 +10,13 @@ import java.util.List;
 
 public class Client{
     public static final String LOOPBACK_IP = "127.0.0.1";
+    public static final int DEFAULT_SERVER_PORT = 9876;
 
     private String ip;
     private int serverPort;
 
     public Client() throws IOException{
-        this(LOOPBACK_IP, Server.PORT);
+        this(LOOPBACK_IP, DEFAULT_SERVER_PORT);
     }
 
     public Client(String ip, int port) throws IOException{

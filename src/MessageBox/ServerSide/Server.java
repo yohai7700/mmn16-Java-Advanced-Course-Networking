@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Server extends Thread {
-    public static final int PORT = 9876;
+    private static final int PORT = 9876;
 
     MessageRepository messages;
     ServerSocket socket;
@@ -27,11 +27,9 @@ public class Server extends Thread {
             try {
                 while (true) {
                     clientSocket = socket.accept();
-                    System.out.println("Handling Connections");
                     handleConnection();
                 }
             } catch (Exception e) {
-                System.out.println("Exception in handling Connections");
                 e.printStackTrace();
                 socket.close();
             }
