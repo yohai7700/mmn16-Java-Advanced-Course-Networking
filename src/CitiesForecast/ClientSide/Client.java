@@ -35,7 +35,7 @@ public class Client {
         return null;
     }
 
-    private void sendToServer(City city) throws UnknownHostException, IOException {
+    private void sendToServer(City city) throws IOException {
         //sending request to server
         InetAddress address = InetAddress.getByName(serverName);
         byte[] data;
@@ -44,7 +44,7 @@ public class Client {
         socket.send(packet);
     }
 
-    private Forecast getFromServer(City city) throws UnknownHostException, IOException{
+    private Forecast getFromServer(City city) throws IOException{
         //reading "encrypted" forecast
         byte[] data = new byte[DATA_SIZE];
         DatagramPacket packet = new DatagramPacket(data, data.length);

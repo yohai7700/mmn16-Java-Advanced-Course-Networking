@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class Server extends Thread {
     private static final int PORT = 9876;
-    private static final String USER_DOESNT_EXIST_MESSAGE = "User isn't subscribed to the server.\nCan't send message";
+    private static final String USER_DOESNT_EXIST_MESSAGE = "isn't subscribed to the server.\nCan't send message.\n";
 
     MessageRepository messages;
     ServerSocket socket;
@@ -54,7 +54,7 @@ public class Server extends Thread {
         }
 
         private void handleConnection (ObjectInputStream inputStream, ObjectOutputStream outputStream){
-            Request request = null;
+            Request request;
             try {
                 request = (Request) inputStream.readObject();
             } catch (ClassNotFoundException | IOException exception) {
@@ -67,7 +67,7 @@ public class Server extends Thread {
         private void handleRequest (Request request, ObjectOutputStream outputStream){
             switch (request.getType()) {
                 case UPLOAD:
-                    uploadMessage(request.getMessage());
+                    uploadMessage(request.getMessage(), outputStream);
                     break;
                 case DOWNLOAD:
                     sendUserMessages(request.getUserName(), outputStream);
@@ -75,9 +75,14 @@ public class Server extends Thread {
             }
         }
 
-        private void uploadMessage (Message message){
-            if(messages.containsUser(message.getReceiverName()))
+        private void uploadMessage (Message message, ObjectOutputStream outputStream){
+            if(messages.containsUser(message.getReceiverName())) {
                 messages.insertMessage(message);
+            }
+            try{ //writing server message if user doesn't exit on server
+                outputStream.writeObject(messages.containsUser(message.getReceiverName()) ?
+                        null : message.getReceiverName() + " " + USER_DOESNT_EXIST_MESSAGE);
+            }catch (IOException ignored){}
         }
 
         private void sendUserMessages (String userName, ObjectOutputStream outputStream){

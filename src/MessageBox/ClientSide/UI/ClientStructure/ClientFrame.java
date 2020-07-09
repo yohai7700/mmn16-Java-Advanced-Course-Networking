@@ -1,12 +1,11 @@
 package MessageBox.ClientSide.UI.ClientStructure;
 
+import Configuration.ConfigurationPanel;
 import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.UI.ClientMenu;
-import Configuration.ConfigurationPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 /**
  * A frame that holds the client. Controls the client object and the configuration panel and
@@ -43,12 +42,7 @@ public class ClientFrame extends JFrame {
 
     public void setClient(String ip, int port){
         Client client;
-        try {
-            client = new Client(ip, port);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Couldn't connect to server.");
-            client = null;
-        }
+        client = new Client(ip, port);
         setClient(client);
     }
 }

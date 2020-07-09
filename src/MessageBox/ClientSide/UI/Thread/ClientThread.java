@@ -7,8 +7,8 @@ import java.net.Socket;
  * Abstract client thread to communicate with server
  */
 public abstract class ClientThread extends Thread{
-    protected String ip;
-    protected int serverPort;
+    protected final String ip;
+    protected final int serverPort;
     protected Socket socket;
     protected InputStream inputStream;
     protected OutputStream outputStream;
@@ -34,7 +34,7 @@ public abstract class ClientThread extends Thread{
     }
 
     private void handleConnection() throws IOException{
-        handleStreams(objectInputStream, objectOutputStream);
+        handleStreams();
 
         objectInputStream.close();
         inputStream.close();
@@ -42,5 +42,5 @@ public abstract class ClientThread extends Thread{
         outputStream.close();
     }
     
-    protected abstract void handleStreams(ObjectInputStream inputStream, ObjectOutputStream outputStream) throws IOException;
+    protected abstract void handleStreams() throws IOException;
 }

@@ -2,6 +2,7 @@ package MessageBox.ServerSide.UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * Panel that has a field and button to add a user
@@ -29,14 +30,19 @@ public class AddUserPanel extends JPanel {
     }
 
     private void setAddUserButton(){
-        addUserButton.addActionListener(actionEvent ->
-                onAddListener.onAdd(userNameTextField.getText().strip()));
+        addUserButton.addActionListener(getAddActionListener());
     }
 
     private void setUserTextField(){
         userNameTextField.setColumns(TEXT_FIELD_WIDTH);
-        userNameTextField.addActionListener(actionEvent ->
-                onAddListener.onAdd(userNameTextField.getText()));
+        userNameTextField.addActionListener(getAddActionListener());
+    }
+
+    private ActionListener getAddActionListener(){
+        return actionEvent -> {
+            onAddListener.onAdd(userNameTextField.getText().strip());
+            userNameTextField.setText("");
+        };
     }
 
     public interface OnAddListener{

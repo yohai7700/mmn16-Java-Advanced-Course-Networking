@@ -1,5 +1,6 @@
 package MessageBox.ClientSide;
 
+import MessageBox.ClientSide.UI.MessageDraft.UnsubscribedUserHandler;
 import MessageBox.ClientSide.UI.Thread.DownloaderThread;
 import MessageBox.ClientSide.UI.Thread.SenderThread;
 import MessageBox.Message;
@@ -15,20 +16,27 @@ public class Client{
     private String ip;
     private int serverPort;
 
-    public Client() throws IOException{
+    public Client(){
         this(LOOPBACK_IP, DEFAULT_SERVER_PORT);
     }
 
-    public Client(String ip, int port) throws IOException{
+    public Client(String ip, int port){
         this.ip = ip;
         serverPort = port;
     }
 
-    public void sendMessage(Message message) throws IOException, UnsubscribedUserException{
-        (new SenderThread(ip, serverPort, message)).start();
+    public void sendMessage(Message message, UnsubscribedUserHandler handler) throws IOException{
+        SenderThread senderThread = new SenderThread(ip, serverPort, message, handler);
+        senderThread.start();
+        try {
+            senderThread.join();//waiting for sender thread to end for handling user doesn't exist on server exception if happens
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public List<Message> downloadMessages(String user) throws IOException, UnsubscribedUserException {
+    public List<Message> downloadMessages(String user) throws IOException{
         List<Message> messages = new ArrayList<>();
         DownloaderThread downloaderThread = new DownloaderThread(ip, serverPort, user, messages::addAll);
         downloaderThread.start();

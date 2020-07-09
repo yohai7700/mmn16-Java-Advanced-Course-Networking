@@ -4,7 +4,6 @@ import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.OnReplyListener;
 import MessageBox.ClientSide.UI.ClientStructure.ClientPanel;
 import MessageBox.ClientSide.UI.FieldPanel;
-import MessageBox.ClientSide.UnsubscribedUserException;
 import MessageBox.Message;
 
 import javax.swing.*;
@@ -72,11 +71,9 @@ public class UserMessagesPanel extends ClientPanel {
                 } catch (IOException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(getParent(), "Couldn't show messages for this user.");
-                } catch (UnsubscribedUserException e){
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(getParent(), e.getMessage());
                 }
             }
+            userField.setText("");
         });
     }
 

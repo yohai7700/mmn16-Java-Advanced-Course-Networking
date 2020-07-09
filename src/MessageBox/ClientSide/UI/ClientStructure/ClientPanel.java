@@ -2,12 +2,13 @@ package MessageBox.ClientSide.UI.ClientStructure;
 
 import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.UnsubscribedUserException;
-import MessageBox.Title.TitlePanel;
 import MessageBox.Message;
+import MessageBox.Title.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Stack;
 
 /**
  * Abstract panel that represents a panel in client UI menu.
@@ -23,7 +24,7 @@ public abstract class ClientPanel extends JPanel{
     private String title;
     private Client client;
 
-    protected TitlePanel titlePanel;
+    protected final TitlePanel titlePanel;
 
     public ClientPanel(String title, Client client){
         setLayout(new BorderLayout());
@@ -63,15 +64,18 @@ public abstract class ClientPanel extends JPanel{
     }
 
     protected void sendMessage(Message message){
+        Stack<UnsubscribedUserException> unsubscribedUser = new Stack<>();
         try {
-            client.sendMessage(message);
+            client.sendMessage(message, unsubscribedUser::push);
+            if(!unsubscribedUser.isEmpty())
+                throw unsubscribedUser.pop();
             JOptionPane.showMessageDialog(this, SEND_MESSAGE_SUCCESS);
-        } catch(IOException exception){
+        } catch(IOException exception) {
             exception.printStackTrace();
             JOptionPane.showMessageDialog(this, SEND_MESSAGE_ERROR);
-        } catch(UnsubscribedUserException exception){
-            exception.printStackTrace();
-            JOptionPane.showMessageDialog(this, exception.getMessage());
+        } catch (UnsubscribedUserException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
 

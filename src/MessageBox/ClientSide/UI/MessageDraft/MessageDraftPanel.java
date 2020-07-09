@@ -24,7 +24,6 @@ public class MessageDraftPanel extends ClientPanel {
         addComponents();
     }
 
-    public Client getClient(){ return super.getClient(); }
 
     public void setClient(Client client){ super.setClient(client); }
 

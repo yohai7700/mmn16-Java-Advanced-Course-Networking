@@ -1,6 +1,5 @@
 package MessageBox.ClientSide.UI.Thread;
 
-import MessageBox.ClientSide.UnsubscribedUserException;
 import MessageBox.Message;
 import MessageBox.Request;
 
@@ -17,17 +16,17 @@ public class DownloaderThread extends ClientThread{
     private final String user;
     private final DownloadListener downloadListener;
 
-    public DownloaderThread(String ip, int serverPort, String user, DownloadListener downloadListener) throws IOException, UnsubscribedUserException{
+    public DownloaderThread(String ip, int serverPort, String user, DownloadListener downloadListener) throws IOException{
         super(ip, serverPort);
         this.user = user;
         this.downloadListener = downloadListener;
     }
 
     @Override
-    protected void handleStreams(ObjectInputStream inputStream, ObjectOutputStream outputStream) throws IOException{
-        requestDownloadMessages(outputStream);
+    protected void handleStreams() throws IOException{
+        requestDownloadMessages(objectOutputStream);
         try {
-            downloadListener.onDownload(receiveMessages(inputStream));
+            downloadListener.onDownload(receiveMessages(objectInputStream));
         }catch(ClassNotFoundException ignored){}
     }
 
