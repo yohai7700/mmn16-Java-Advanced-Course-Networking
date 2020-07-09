@@ -1,4 +1,4 @@
-package MessageBox.ServerSide.UI.Panels;
+package MessageBox.ServerSide.UI;
 
 import MessageBox.Title.TitlePanel;
 import MessageBox.ServerSide.Server;
@@ -6,6 +6,9 @@ import MessageBox.ServerSide.Server;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel to represent a server UI, letting user add users to server.
+ */
 public class ServerPanel extends JPanel{
 
     private final Server server;
@@ -24,6 +27,7 @@ public class ServerPanel extends JPanel{
     }
 
     private void addComponents(){
+        //users are in the middle, title on top, and add user field at the bottom
         add(titlePanel, BorderLayout.NORTH);
         JScrollPane usersScrollPane = new JScrollPane(usersPanel);
         add(usersScrollPane, BorderLayout.CENTER);

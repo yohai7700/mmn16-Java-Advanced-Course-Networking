@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class Server extends Thread {
     private static final int PORT = 9876;
+    private static final String USER_DOESNT_EXIST_MESSAGE = "User isn't subscribed to the server.\nCan't send message";
 
     MessageRepository messages;
     ServerSocket socket;
@@ -60,12 +61,10 @@ public class Server extends Thread {
                 exception.printStackTrace();
                 return;
             }
-            System.out.println("Request" + request);
             handleRequest(request, outputStream);
         }
 
         private void handleRequest (Request request, ObjectOutputStream outputStream){
-            System.out.println("Got request: " + request);
             switch (request.getType()) {
                 case UPLOAD:
                     uploadMessage(request.getMessage());
@@ -91,7 +90,7 @@ public class Server extends Thread {
             do { //tries to send an empty message to signal all messages sent, until successful
                 try {
                     outputStream.writeObject(Message.createEmptyMessage());
-                    return;
+                    break;
                 } catch (IOException ignored) { }
             } while (true);
         }

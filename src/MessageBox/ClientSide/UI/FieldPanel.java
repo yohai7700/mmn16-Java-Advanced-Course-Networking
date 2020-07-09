@@ -3,6 +3,10 @@ package MessageBox.ClientSide.UI;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Simple panel with a text field and a name for thet text field
+ * so that user understands what it means.
+ */
 public class FieldPanel extends JPanel{
     private static final int FIELD_WIDTH = 20;
 

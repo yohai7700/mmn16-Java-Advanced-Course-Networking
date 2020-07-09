@@ -7,9 +7,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A panel that holds several message panels
+ */
 public class MessagesPanel extends JPanel{
 
-    private final List<MessagePanel> messagePanels;
+    private List<MessagePanel> messagePanels;
 
     private OnReplyListener onReplyListener;
 
@@ -25,6 +28,7 @@ public class MessagesPanel extends JPanel{
             add(message);
     }
 
+    //adding message with adding a message panel as well
     public void add(Message message){
         MessagePanel messagePanel = new MessagePanel(message);
         messagePanel.setOnReplyListener(onReplyListener);
@@ -42,6 +46,7 @@ public class MessagesPanel extends JPanel{
         repaint();
     }
 
+    //deleting message by finding the matching panels and deleting them
     public void delete(Message message){
         List<MessagePanel> toBeDeletedList = new ArrayList<>();
         for (MessagePanel messagePanel : messagePanels)
@@ -50,10 +55,10 @@ public class MessagesPanel extends JPanel{
         for(MessagePanel toBeDeleted: toBeDeletedList)
             removeMessagePanel(toBeDeleted);
     }
-
+    //setting the messages on the panel
     public void setMessages(List<Message> messages){
-        for(MessagePanel messagePanel: this.messagePanels)
-            removeMessagePanel(messagePanel);
+        removeAll();
+        messagePanels = new ArrayList<>();
         for(Message message: messages)
             add(message);
     }

@@ -3,15 +3,26 @@ package MessageBox.ClientSide.UI.Thread;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * Abstract client thread to communicate with server
+ */
 public abstract class ClientThread extends Thread{
-    String ip;
-    int serverPort;
-    Socket socket;
+    protected String ip;
+    protected int serverPort;
+    protected Socket socket;
+    protected InputStream inputStream;
+    protected OutputStream outputStream;
+    protected ObjectInputStream objectInputStream;
+    protected ObjectOutputStream objectOutputStream;
 
     public ClientThread(String ip, int serverPort) throws IOException {
         this.ip = ip;
         this.serverPort = serverPort;
         socket = new Socket(ip, serverPort);
+        outputStream = socket.getOutputStream();
+        objectOutputStream = new ObjectOutputStream(outputStream);
+        inputStream = socket.getInputStream();
+        objectInputStream = new ObjectInputStream(inputStream);
     }
 
     @Override
@@ -22,12 +33,7 @@ public abstract class ClientThread extends Thread{
         }catch (Exception ignored){}
     }
 
-    private void handleConnection() throws Exception{
-        OutputStream outputStream = socket.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-        InputStream inputStream = socket.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
+    private void handleConnection() throws IOException{
         handleStreams(objectInputStream, objectOutputStream);
 
         objectInputStream.close();

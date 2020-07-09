@@ -4,6 +4,7 @@ import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.OnReplyListener;
 import MessageBox.ClientSide.UI.ClientStructure.ClientPanel;
 import MessageBox.ClientSide.UI.FieldPanel;
+import MessageBox.ClientSide.UnsubscribedUserException;
 import MessageBox.Message;
 
 import javax.swing.*;
@@ -11,6 +12,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * A panel that shows UI to the user by letting him download user messages.
+ * Having a title, a user field and a panel to show messages
+ */
 public class UserMessagesPanel extends ClientPanel {
     private static final String TITLE = "User Messages";
 
@@ -58,6 +63,7 @@ public class UserMessagesPanel extends ClientPanel {
     private void setShowMessagesButton(){
         showMessagesButton.addActionListener(actionEvent ->{
             if(!userField.getText().isEmpty()) {
+                //downloading messages and setting them on messages panel
                 try {
                     List<Message> messages = getClient().downloadMessages(userField.getText());
                     if(messages == null || messages.size() == 0 || messages.get(0).isEmpty())
@@ -66,6 +72,9 @@ public class UserMessagesPanel extends ClientPanel {
                 } catch (IOException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(getParent(), "Couldn't show messages for this user.");
+                } catch (UnsubscribedUserException e){
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(getParent(), e.getMessage());
                 }
             }
         });

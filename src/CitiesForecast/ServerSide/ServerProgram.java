@@ -3,6 +3,9 @@ package CitiesForecast.ServerSide;
 import javax.swing.*;
 import java.net.SocketException;
 
+/**
+ * Holding the program frame.
+ */
 public class ServerProgram {
     public static final int FRAME_WIDTH = 400, FRAME_HEIGHT = 200;
 

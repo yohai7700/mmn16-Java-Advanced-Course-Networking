@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DateFormat;
 
+/**
+ * Single message panel
+ */
 public class MessagePanel extends JPanel {
     private static final int BORDER_THICKNESS = 1;
 
@@ -64,6 +67,7 @@ public class MessagePanel extends JPanel {
     }
 
     private void addComponents(){
+        //designing the structure of the panel
         add(fromLabel, BorderLayout.WEST);
         add(topicLabel, BorderLayout.NORTH);
         JScrollPane bodyScrollPane = new JScrollPane(bodyArea);

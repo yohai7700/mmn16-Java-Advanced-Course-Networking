@@ -6,6 +6,10 @@ import CitiesForecast.Forecast;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A panel that displays forecasts for a city,
+ * lets user decide what city to show forecasts for with a combo box.
+ */
 public class ClientPanel extends JPanel{
     private static final Color LABEL_COLOR = Color.LIGHT_GRAY;
 

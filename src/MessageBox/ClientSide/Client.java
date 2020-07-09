@@ -24,11 +24,11 @@ public class Client{
         serverPort = port;
     }
 
-    public void sendMessage(Message message) throws IOException{
+    public void sendMessage(Message message) throws IOException, UnsubscribedUserException{
         (new SenderThread(ip, serverPort, message)).start();
     }
 
-    public List<Message> downloadMessages(String user) throws IOException{
+    public List<Message> downloadMessages(String user) throws IOException, UnsubscribedUserException {
         List<Message> messages = new ArrayList<>();
         DownloaderThread downloaderThread = new DownloaderThread(ip, serverPort, user, messages::addAll);
         downloaderThread.start();

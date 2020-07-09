@@ -1,6 +1,7 @@
 package MessageBox.ClientSide.UI.ClientStructure;
 
 import MessageBox.ClientSide.Client;
+import MessageBox.ClientSide.UnsubscribedUserException;
 import MessageBox.Title.TitlePanel;
 import MessageBox.Message;
 
@@ -8,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * Abstract panel that represents a panel in client UI menu.
+ */
 public abstract class ClientPanel extends JPanel{
     protected static final Color BORDER = Color.GRAY;
     protected static final int BORDER_THICKNESS = 2;
@@ -65,6 +69,9 @@ public abstract class ClientPanel extends JPanel{
         } catch(IOException exception){
             exception.printStackTrace();
             JOptionPane.showMessageDialog(this, SEND_MESSAGE_ERROR);
+        } catch(UnsubscribedUserException exception){
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(this, exception.getMessage());
         }
     }
 

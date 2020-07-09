@@ -1,8 +1,11 @@
-package MessageBox.ServerSide.UI.Panels;
+package MessageBox.ServerSide.UI;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel that has a field and button to add a user
+ */
 public class AddUserPanel extends JPanel {
     private static final int TEXT_FIELD_WIDTH = 10;
 

@@ -7,6 +7,9 @@ import MessageBox.Message;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A panel that consists of UI to the user to send a message
+ */
 public class MessageDraftPanel extends ClientPanel {
     private static final String TITLE = "Send Message";
 

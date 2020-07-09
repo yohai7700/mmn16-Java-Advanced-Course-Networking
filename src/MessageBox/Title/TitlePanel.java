@@ -3,6 +3,9 @@ package MessageBox.Title;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A panel that holds a title label
+ */
 public class TitlePanel extends JPanel {
     private static final Color DISABLED_COLOR = Color.LIGHT_GRAY,
             DEFAULT_COLOR = new Color(0x8f9bff);

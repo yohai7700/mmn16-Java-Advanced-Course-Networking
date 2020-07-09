@@ -1,4 +1,4 @@
-package MessageBox.ServerSide.UI.Panels;
+package MessageBox.ServerSide.UI;
 
 import MessageBox.OnDeleteListener;
 
@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A panel to hold a list of user item panels
+ */
 public class UsersPanel extends JPanel {
     private final List<UserItemPanel> userItemPanels;
     private final OnDeleteListener onDeleteListener;

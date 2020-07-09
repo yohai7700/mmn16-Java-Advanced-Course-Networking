@@ -20,6 +20,7 @@ public class MessageRepository {
 
     public void insertMessage(Message message){
         String userName = message.getReceiverName();
+        //adds to current user if exist, else add user
         if(messages.containsKey(userName))
             messages.get(userName).add(message);
         else{

@@ -18,3 +18,11 @@ Tokyo
 Sunny
 Cold
 Rainy
+Seattle
+Rainy with Clouds
+Rainy
+Sunny
+Barcelona
+Cold
+Cold
+Rainy

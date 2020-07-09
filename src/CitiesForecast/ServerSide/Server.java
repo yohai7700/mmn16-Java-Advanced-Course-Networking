@@ -9,6 +9,9 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Collection;
 
+/**
+ * Thread to send forecasts using UDP.
+ */
 public class Server extends Thread{
     public static final int PORT = 7777;
     private static final int REQUEST_SIZE = 1024/*bytes*/;
@@ -34,9 +37,11 @@ public class Server extends Thread{
             byte[] bytes = new byte[REQUEST_SIZE];
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
             socket.receive(packet);
+            //getting request city
             String city = new String(packet.getData()).substring(0, packet.getLength());
             int clientPort = packet.getPort();
             InetAddress inetAddress = packet.getAddress();
+            //"serializing" forecast over UDP and sending it
             String joined = getForecast(city).joinToString();
             packet = new DatagramPacket(joined.getBytes(), joined.getBytes().length, inetAddress, clientPort);
             socket.send(packet);
@@ -45,6 +50,7 @@ public class Server extends Thread{
         }
     }
 
+    //reading forecasts and finding forecast by city
     private Forecast getForecast(String city){
         Collection<Forecast> forecasts = fileReader.readForecasts();
         if(forecasts == null) return null;

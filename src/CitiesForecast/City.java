@@ -1,14 +1,14 @@
 package CitiesForecast;
 
+/**
+ * A given list of cities.
+ */
 public enum City {
     PARIS,
     JERUSALEM,
-    SAN_DIEGO,
     SEATTLE,
     BERLIN,
     TOKYO,
-    BEIJING,
-    MADRID,
     BARCELONA,
     SAN_FRANCISCO;
 
@@ -18,10 +18,7 @@ public enum City {
             case PARIS: return "Paris";
             case TOKYO: return "Tokyo";
             case BERLIN: return "Berlin";
-            case MADRID: return "Madrid";
             case BARCELONA: return "Barcelona";
-            case BEIJING: return "Beijing";
-            case SAN_DIEGO: return "San Diego";
             case SEATTLE: return "Seattle";
             case JERUSALEM: return "Jerusalem";
             case SAN_FRANCISCO: return "San Francisco";

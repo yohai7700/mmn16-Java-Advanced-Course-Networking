@@ -2,6 +2,9 @@ package MessageBox;
 
 import java.io.Serializable;
 
+/**
+ * Represents a request from client to server
+ */
 public class Request implements Serializable {
     public enum Type{DOWNLOAD, UPLOAD}
 

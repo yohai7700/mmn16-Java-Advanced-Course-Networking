@@ -1,9 +1,12 @@
-package MessageBox.ServerSide.UI.Panels;
+package MessageBox.ServerSide.UI;
 
 import MessageBox.OnDeleteListener;
 
 import javax.swing.*;
 
+/**
+ * A panel that represents one user on the server, with button to delete it(user what delete will do)
+ */
 public class UserItemPanel extends JPanel{
 
     private final JLabel userNameLabel;

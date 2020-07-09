@@ -8,11 +8,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * A thread that can send a message to the server
+ */
 public class SenderThread extends ClientThread {
 
     private final Message message;
 
-    public SenderThread(String ip, int serverPort, Message message) throws IOException {
+    public SenderThread(String ip, int serverPort, Message message) throws IOException{
         super(ip, serverPort);
         this.message = message;
     }

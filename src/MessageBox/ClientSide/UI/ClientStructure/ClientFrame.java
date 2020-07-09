@@ -2,12 +2,16 @@ package MessageBox.ClientSide.UI.ClientStructure;
 
 import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.UI.ClientMenu;
-import MessageBox.ClientSide.UI.Configuration.ConfigurationPanel;
+import Configuration.ConfigurationPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+/**
+ * A frame that holds the client. Controls the client object and the configuration panel and
+ * menu.
+ */
 public class ClientFrame extends JFrame {
     public static final int FRAME_WIDTH = 1000, FRAME_HEIGHT = 500;
     private static final String TITLE = "Messages";

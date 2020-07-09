@@ -3,6 +3,9 @@ package MessageBox.Title;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * special label that is styled to be a title
+ */
 public class TitleLabel extends JLabel{
     public static final Color DEFAULT_BACKGROUND = Color.BLACK;
 

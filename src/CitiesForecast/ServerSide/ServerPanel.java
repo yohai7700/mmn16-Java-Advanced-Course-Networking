@@ -2,6 +2,9 @@ package CitiesForecast.ServerSide;
 
 import javax.swing.*;
 
+/**
+ * Panel to let users decide forecasts file name.
+ */
 public class ServerPanel extends JPanel {
     private static final int FIELD_WIDTH = 10;
 

@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 
+/**
+ * An object that can read forecasts from a file returning them.
+ * forecasts must be on the format:
+ * CITY
+ * YESTERDAY FORECAST
+ * TODAY FORECAST
+ * TOMORROW FORECAST
+ */
 public class ForecastFileReader {
     public static final String DEFAULT_FILE = "forecast.txt";
 
@@ -29,6 +37,7 @@ public class ForecastFileReader {
     public Collection<Forecast> readForecasts(){
         ArrayList<Forecast> forecasts = new ArrayList<>();
         Scanner scanner;
+        //reading each forecast from file
         try {
             scanner = new Scanner(new File(fileName));
         } catch (FileNotFoundException e){ System.out.println("Couldn't open file: " + System.getProperty("user.dir")); return null;  }
@@ -37,6 +46,7 @@ public class ForecastFileReader {
         return forecasts;
     }
 
+    //reading forecast by format
     private Forecast readForecast(Scanner scanner){
         City city = City.get(scanner.nextLine());
         String yesterday = scanner.nextLine();

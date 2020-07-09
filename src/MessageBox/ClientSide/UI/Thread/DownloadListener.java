@@ -4,6 +4,6 @@ import MessageBox.Message;
 
 import java.util.List;
 
-public interface DownloadListener {
+public interface DownloadListener{
     void onDownload(List<Message> messages);
 }

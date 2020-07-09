@@ -1,4 +1,4 @@
-package MessageBox.ClientSide.UI.Configuration;
+package Configuration;
 
 import MessageBox.ClientSide.Client;
 import MessageBox.ClientSide.UI.FieldPanel;
@@ -6,7 +6,7 @@ import MessageBox.ClientSide.UI.FieldPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-
+//A panel that lets user configure network setting, IP and port.
 public class ConfigurationPanel extends JPanel{
     public static final int PORT_UNDEFINED = -1;
 
@@ -37,6 +37,7 @@ public class ConfigurationPanel extends JPanel{
 
     public void setConfigureListener(ConfigurationListener configureListener){
         ActionListener[] actionListeners = configureButton.getActionListeners();
+        //removing action listeners from buttons
         for(ActionListener actionListener: actionListeners)
             configureButton.removeActionListener(actionListener);
         configureButton.addActionListener(actionEvent ->{
@@ -44,7 +45,7 @@ public class ConfigurationPanel extends JPanel{
             int port = getPort();
             if(port == PORT_UNDEFINED)
                 JOptionPane.showMessageDialog(getParent(), "Port must be a number.");
-            else
+            else //letting user decide how to configure
                 configureListener.onConfigure(ip, port);
         });
     }

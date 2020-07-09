@@ -6,6 +6,10 @@ import MessageBox.Message;
 import javax.swing.*;
 import java.util.Calendar;
 
+/**
+ * A panel that shows the body of the draft, with only
+ * the fields to fill for a message.
+ */
 public class DraftBodyPanel extends JPanel {
     enum FieldType{FROM, TO, TOPIC, BODY;
 
